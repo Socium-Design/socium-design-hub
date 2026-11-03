@@ -1,0 +1,12 @@
+:host {
+  display: block;
+  padding: var(--bridges-position-padding-xl);
+}
+
+h1 {
+  margin: 0;
+  font-family: var(--bridges-shape-text-heading-1-font);
+  font-weight: var(--bridges-shape-text-heading-1-weight);
+  font-size: var(--bridges-size-text-heading-size-page);
+  color: var(--bridges-color-text-primary);
+}
