@@ -71,11 +71,23 @@ describe('Pages Prototypes', () => {
     expect(page.querySelector('h1')?.textContent).toBe("Création d'un objectif");
     const iframe = page.querySelector('iframe')!;
     expect(iframe.getAttribute('src')).toBe('https://sirh-prototype.vercel.app/perf/objectifs/nouveau');
-    // Squelette tant que l'iframe n'a pas émis « load » (le test charge la vraie adresse : on remet l'état à zéro).
-    (harness.fixture.debugElement.query(By.directive(EcranPageComponent)).componentInstance as EcranPageComponent).charge.set(false);
+    // Squelette tant que le prototype n'est pas chargé (le test charge la vraie adresse : on remet l'état à zéro).
+    const composant = harness.fixture.debugElement.query(By.directive(EcranPageComponent))
+      .componentInstance as EcranPageComponent;
+    composant.charge.set(false);
     harness.detectChanges();
     expect(page.querySelector('.squelette')?.textContent).toContain('Chargement du prototype');
-    iframe.dispatchEvent(new Event('load'));
+    // Le « load » d'about:blank est ignoré…
+    composant.surChargement({ target: { contentWindow: { location: { href: 'about:blank' } } } } as unknown as Event);
+    harness.detectChanges();
+    expect(page.querySelector('.squelette')).not.toBeNull();
+    // … celui du prototype (autre origine, document illisible) retire le squelette.
+    const autreOrigine = {
+      get location(): Location {
+        throw new DOMException('Blocked a frame with origin', 'SecurityError');
+      },
+    };
+    composant.surChargement({ target: { contentWindow: autreOrigine } } as unknown as Event);
     harness.detectChanges();
     expect(page.querySelector('.squelette')).toBeNull();
 
