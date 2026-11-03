@@ -1,0 +1,18 @@
+// Styles communs des sections de la page composant (enveloppe uniquement).
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bridges-position-gap-lg);
+}
+
+.carte {
+  overflow: hidden;
+  background: var(--bridges-color-surface-neutral-white);
+  border: var(--bridges-shape-figure-border-stroke-default) solid var(--bridges-color-border-subtle);
+  border-radius: var(--bridges-shape-figure-radius-xl);
+}
+
+code {
+  font-family: var(--bridges-shape-text-code-font);
+  font-size: var(--bridges-size-text-text-size-xs);
+}

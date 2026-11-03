@@ -1,0 +1,32 @@
+// Mise en page des exemples uniquement : rien ici ne touche le composant affiché.
+:host {
+  display: block;
+  padding: var(--bridges-position-padding-xl);
+  background: var(--bridges-color-surface-neutral-white);
+}
+
+.exemples {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--bridges-position-gap-xl);
+
+  &.seul {
+    justify-content: center;
+    padding: var(--bridges-position-padding-2xl) 0;
+  }
+}
+
+figure {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--bridges-position-gap-sm);
+  margin: 0;
+}
+
+figcaption {
+  font-family: var(--bridges-shape-text-code-font);
+  font-size: var(--bridges-size-text-text-size-xs);
+  color: var(--bridges-color-text-secondary);
+}
