@@ -54,7 +54,28 @@ import { produit } from '../produits';
             </button>
           </div>
         }
-        <iframe [src]="src()" [title]="'Prototype : ' + e.titre" allow="clipboard-write"></iframe>
+        <div class="zone">
+          @if (!charge()) {
+            <!-- Squelette de l'enveloppe (le kit n'a pas de Skeleton) : silhouette du shell du prototype. -->
+            <div class="squelette" role="status" aria-live="polite">
+              <span class="lecteur">Chargement du prototype…</span>
+              <span class="menu" aria-hidden="true"></span>
+              <span class="contenu" aria-hidden="true">
+                <span class="ligne titre-squelette"></span>
+                <span class="ligne"></span>
+                <span class="ligne courte"></span>
+                <span class="bloc"></span>
+              </span>
+            </div>
+          }
+          <iframe
+            [src]="src()"
+            [title]="'Prototype : ' + e.titre"
+            allow="clipboard-write"
+            [attr.aria-hidden]="charge() ? null : 'true'"
+            (load)="surChargement($event)"
+          ></iframe>
+        </div>
       </div>
     } @else {
       <h1>Écran introuvable</h1>
@@ -71,6 +92,8 @@ export class EcranPageComponent {
   readonly nomProduit = computed(() => produit(this.produit())?.nom ?? '');
   readonly statuts = STATUTS_ECRAN;
   readonly pleinEcran = signal(false);
+  /** Vrai une fois le document du prototype chargé dans l'iframe. */
+  readonly charge = signal(false);
 
   private readonly sanitizer = inject(DomSanitizer);
   // Adresse construite depuis une fiche (PROTOTYPES_URL + route), jamais depuis une saisie.
@@ -86,6 +109,12 @@ export class EcranPageComponent {
     const titre = inject(Title);
     effect(() => titre.setTitle(`${this.fiche()?.titre ?? 'Écran introuvable'} — Prototypes — Socium Design Hub`));
 
+    // Un autre écran (même composant, autre fiche) : la nouvelle page se charge, on remontre le squelette.
+    effect(() => {
+      this.src();
+      this.charge.set(false);
+    });
+
     // Plein écran : la page du hub ne défile plus derrière le calque, le focus va au bouton « Quitter ».
     effect(() => {
       const actif = this.pleinEcran();
@@ -93,6 +122,20 @@ export class EcranPageComponent {
       if (actif) queueMicrotask(() => this.boutonQuitter()?.nativeElement.focus());
     });
     inject(DestroyRef).onDestroy(() => (document.body.style.overflow = ''));
+  }
+
+  /**
+   * L'iframe émet d'abord « load » pour about:blank (document lisible, même origine) ; le prototype, servi depuis une
+   * autre origine, n'est plus lisible : c'est ce chargement-là qui retire le squelette.
+   */
+  surChargement(event: Event): void {
+    const fenetre = (event.target as HTMLIFrameElement).contentWindow;
+    try {
+      if (fenetre?.location.href === 'about:blank') return;
+    } catch {
+      // Autre origine : le prototype est chargé.
+    }
+    this.charge.set(true);
   }
 
   ouvrirPleinEcran(): void {

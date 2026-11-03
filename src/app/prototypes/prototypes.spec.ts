@@ -1,8 +1,10 @@
 import { TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 import { routes } from '../app.routes';
 import { ECRANS, PROTOTYPES_URL } from './ecrans';
+import { EcranPageComponent } from './pages/ecran-page.component';
 import { PRODUITS } from './produits';
 
 describe('Fiches des prototypes', () => {
@@ -41,8 +43,9 @@ describe('Pages Prototypes', () => {
     expect(cartes[0].tagName).toBe('A');
     expect(cartes[2].tagName).toBe('DIV');
     expect(cartes[2].textContent).toContain('Bientôt');
-    // Workspace n'a pas d'illustration : fond neutre.
-    expect(cartes[0].querySelector('.illustration.neutre')).not.toBeNull();
+    // Workspace n'a pas d'illustration : dégradé avec le glyphe en grand.
+    expect(cartes[0].querySelector('.illustration.degrade soc-app-icon-glyph')).not.toBeNull();
+    expect(cartes[1].textContent).toContain('Pilotez les performances et suivez les évaluations de vos équipes.');
     expect(cartes[1].querySelector('img')?.getAttribute('src')).toBe('illustrations/performance.svg');
   });
 
@@ -68,6 +71,13 @@ describe('Pages Prototypes', () => {
     expect(page.querySelector('h1')?.textContent).toBe("Création d'un objectif");
     const iframe = page.querySelector('iframe')!;
     expect(iframe.getAttribute('src')).toBe('https://sirh-prototype.vercel.app/perf/objectifs/nouveau');
+    // Squelette tant que l'iframe n'a pas émis « load » (le test charge la vraie adresse : on remet l'état à zéro).
+    (harness.fixture.debugElement.query(By.directive(EcranPageComponent)).componentInstance as EcranPageComponent).charge.set(false);
+    harness.detectChanges();
+    expect(page.querySelector('.squelette')?.textContent).toContain('Chargement du prototype');
+    iframe.dispatchEvent(new Event('load'));
+    harness.detectChanges();
+    expect(page.querySelector('.squelette')).toBeNull();
 
     const bouton = [...page.querySelectorAll('button')].find((b) => b.textContent?.includes('Plein écran'))!;
     bouton.click();

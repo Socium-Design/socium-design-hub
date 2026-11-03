@@ -40,9 +40,33 @@ li {
   aspect-ratio: 360 / 192;
   object-fit: cover;
 
-  &.neutre {
-    background: var(--bridges-color-background-layer-2);
+  // Produit sans illustration : dégradé bleu clair et cercle, comme les illustrations fournies, glyphe en grand.
+  &.degrade {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--bridges-color-accent-blue-bg), var(--bridges-color-surface-neutral-white));
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 36%;
+      left: 64%;
+      width: 42%;
+      aspect-ratio: 1;
+      border-radius: var(--bridges-shape-figure-radius-full);
+      background: linear-gradient(180deg, var(--bridges-color-accent-blue-bg), var(--bridges-color-surface-neutral-first));
+    }
   }
+}
+
+.grand-glyphe {
+  position: relative;
+  display: inline-flex;
+  // Le glyphe du kit a une taille fixe : on l'agrandit sans toucher à ses styles.
+  transform: scale(3.5);
 }
 
 .corps {

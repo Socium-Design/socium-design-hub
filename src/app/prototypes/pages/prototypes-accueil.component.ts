@@ -36,7 +36,9 @@ import { PRODUITS } from '../produits';
       @if (carte.illustration) {
         <img class="illustration" [src]="'illustrations/' + carte.illustration" alt="" />
       } @else {
-        <div class="illustration neutre" aria-hidden="true"></div>
+        <div class="illustration degrade" aria-hidden="true">
+          <span class="grand-glyphe"><soc-app-icon-glyph [name]="carte.icone" /></span>
+        </div>
       }
       <div class="corps">
         <div class="nom">
