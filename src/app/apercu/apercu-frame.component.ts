@@ -29,6 +29,7 @@ export class ApercuFrameComponent {
   readonly exemples = input.required<Exemple[]>();
   readonly titre = input.required<string>();
   readonly legendes = input(false, { transform: booleanAttribute });
+  readonly largeur = input<'contenu' | 'champ'>('contenu');
 
   private readonly cadre = viewChild.required<ElementRef<HTMLIFrameElement>>('cadre');
   private readonly sanitizer = inject(DomSanitizer);
@@ -59,7 +60,13 @@ export class ApercuFrameComponent {
 
     effect(() => {
       if (!this.pret()) return;
-      this.envoyer({ canal: CANAL, type: 'rendu', exemples: this.exemples(), legendes: this.legendes() });
+      this.envoyer({
+        canal: CANAL,
+        type: 'rendu',
+        exemples: this.exemples(),
+        legendes: this.legendes(),
+        largeur: this.largeur(),
+      });
     });
   }
 

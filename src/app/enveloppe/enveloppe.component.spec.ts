@@ -12,8 +12,18 @@ describe('Enveloppe', () => {
     const harness = await RouterTestingHarness.create('/demarrer');
     const page = harness.fixture.nativeElement as HTMLElement;
     const liens = [...page.querySelectorAll('app-barre-laterale a')].map((a) => a.textContent?.trim());
-    expect(liens).toEqual(['Socium Design Hub', 'Démarrer', 'Button', 'Tous les prototypes']);
-    expect(page.querySelector('app-barre-laterale')?.textContent).toContain('Actions');
+    expect(liens).toEqual([
+      'Socium Design Hub',
+      'Démarrer',
+      'Button',
+      'Champ texte',
+      'Select',
+      'Tabs',
+      'Tag',
+      'Tous les prototypes',
+    ]);
+    const categories = [...page.querySelectorAll('app-barre-laterale .categorie')].map((c) => c.textContent);
+    expect(categories).toEqual(['Actions', 'Saisie', 'Sélection', 'Navigation', 'Feedback']);
     expect(page.querySelector('app-en-tete')?.textContent).toMatch(/v\d+\.\d+\.\d+/);
   });
 

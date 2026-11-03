@@ -3,7 +3,7 @@ import { SelectOption, SocInputText, SocSelect, SocSwitch } from '@socium-design
 import { ApercuFrameComponent } from '../../../apercu/apercu-frame.component';
 import { codeAngular } from '../../../catalogue/code-angular';
 import { FicheComposant, Reglage, nomTechnique } from '../../../catalogue/fiche.model';
-import { optionsReglage, valeursParDefaut } from '../../../catalogue/reglages';
+import { defautReglage, optionsReglage, valeursParDefaut } from '../../../catalogue/reglages';
 import { BlocCodeComponent } from '../../../code/bloc-code.component';
 
 @Component({
@@ -12,7 +12,13 @@ import { BlocCodeComponent } from '../../../code/bloc-code.component';
   template: `
     <div class="carte">
       <div class="haut">
-        <app-apercu-frame class="apercu" [composant]="fiche().id" [exemples]="exemple()" [titre]="'Aperçu de ' + fiche().titre" />
+        <app-apercu-frame
+          class="apercu"
+          [composant]="fiche().id"
+          [exemples]="exemple()"
+          [titre]="'Aperçu de ' + fiche().titre"
+          [largeur]="fiche().apercu ?? 'contenu'"
+        />
         <form class="reglages" aria-label="Réglages" (submit)="$event.preventDefault()">
           @for (reglage of fiche().reglages; track reglage.cle) {
             <div class="reglage" [class.ligne]="reglage.controle === 'interrupteur'">
@@ -58,7 +64,9 @@ export class PlaygroundComponent {
   readonly code = computed(() => codeAngular(this.fiche(), this.valeurs()));
 
   options(reglage: Reglage): SelectOption[] {
-    return optionsReglage(this.fiche(), reglage).map((v) => ({ value: v, label: v }));
+    const options = optionsReglage(this.fiche(), reglage).map((v) => ({ value: v, label: v }));
+    // Un réglage sans valeur par défaut (valeur du select, par ex.) peut revenir à « Aucune ».
+    return defautReglage(this.fiche(), reglage) === '' ? [{ value: '', label: 'Aucune' }, ...options] : options;
   }
 
   technique(reglage: Reglage): string {

@@ -10,12 +10,31 @@ export interface ImportCode {
   depuis: string;
 }
 
-/** Input du composant (nom = `cle`) : options lues dans le type du kit, défaut lu dans l'API. */
+/**
+ * Input du composant (nom = `cle`). Liste : options lues dans le type union du kit, ou à défaut dans les identifiants
+ * de la donnée fixe (`id` / `value`). Défaut : `defaut`, sinon celui de l'API.
+ */
 export interface ReglageInput {
   cle: string;
   type: 'input';
-  controle: 'select';
+  controle: 'select' | 'texte' | 'interrupteur';
   libelle: string;
+  defaut?: string | boolean;
+  /**
+   * Liée à un signal de la classe dans le code généré : `[(cle)]="champ"`, ou avec `evenement`
+   * `[cle]="champ()" (evenement)="champ.set($event)"`.
+   */
+  liaison?: { champ: string; evenement?: string };
+  /** Code ajouté quand l'interrupteur est actif : attributs sur l'élément, membres de la classe. */
+  codeSiActif?: { attributs?: string[]; membres?: string[] };
+}
+
+/** Donnée passée telle quelle à un input (`options`, `items`) : propriété de la classe dans le code généré. */
+export interface DonneeFixe {
+  input: string;
+  /** Type exporté par le kit d'un élément du tableau (`SelectOption`). */
+  type: string;
+  valeur: Record<string, string | boolean>[];
 }
 
 /** Texte projeté dans le slot par défaut. */
@@ -84,8 +103,11 @@ export interface FicheComposant {
   reglages: Reglage[];
   /** Rôle court, en français, de chaque slot du kit (`default` pour le contenu par défaut). */
   slots: Record<string, string>;
-  /** Une ligne par valeur de ce réglage dans la section « Variantes ». */
-  variantes: { reglage: string };
+  donnees?: DonneeFixe[];
+  /** Une ligne par valeur de ce réglage dans la section « Variantes » ; sans elle, pas de section. */
+  variantes?: { reglage: string };
+  /** Largeur de chaque exemple dans l'aperçu : celle du contenu, ou celle d'un champ de formulaire. */
+  apercu?: 'contenu' | 'champ';
   etats: Exemple[];
 }
 
