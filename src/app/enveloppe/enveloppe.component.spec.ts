@@ -30,6 +30,23 @@ describe('Enveloppe', () => {
     await harness.fixture.whenStable();
     expect(TestBed.inject(Router).url).toBe('/composants/button');
   });
+
+  it('vide la recherche et ferme les résultats avec Échap', async () => {
+    const harness = await RouterTestingHarness.create('/demarrer');
+    const page = harness.fixture.nativeElement as HTMLElement;
+    const champ = page.querySelector('app-en-tete input') as HTMLInputElement;
+    champ.value = 'butt';
+    champ.dispatchEvent(new Event('input'));
+    harness.detectChanges();
+    expect(page.querySelector('.resultats')).not.toBeNull();
+
+    champ.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    harness.detectChanges();
+    await harness.fixture.whenStable();
+    harness.detectChanges();
+    expect(champ.value).toBe('');
+    expect(page.querySelector('.resultats')).toBeNull();
+  });
 });
 
 describe('rechercher', () => {
