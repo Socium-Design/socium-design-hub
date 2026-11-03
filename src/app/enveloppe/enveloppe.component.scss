@@ -1,6 +1,8 @@
 :host {
   display: grid;
-  grid-template-columns: var(--index-navigation-sidenavigation-nav-width-open) minmax(0, 1fr);
+  // Un peu plus large que le menu du kit, pour que les noms d'écrans tiennent sur une ligne.
+  --largeur-barre: calc(var(--index-navigation-sidenavigation-nav-width-open) * 1.25);
+  grid-template-columns: var(--largeur-barre) minmax(0, 1fr);
   min-height: 100vh;
   background: var(--bridges-color-background-layer-1);
   color: var(--bridges-color-text-primary);
@@ -13,8 +15,8 @@
   height: 100vh;
   overflow-y: auto;
   box-sizing: border-box;
-  background: var(--bridges-color-surface-neutral-white);
-  border-right: var(--bridges-shape-figure-border-stroke-default) solid var(--bridges-color-border-subtle);
+  // Fond sombre du menu latéral du kit, comme le shell du SIRH.
+  background: var(--index-navigation-sidenavigation-nav-bg);
 }
 
 .voile {
@@ -44,7 +46,7 @@ main {
     position: fixed;
     inset: 0 auto 0 0;
     z-index: 20;
-    width: var(--index-navigation-sidenavigation-nav-width-open);
+    width: var(--largeur-barre);
     visibility: hidden;
     transform: translateX(-100%);
     transition:

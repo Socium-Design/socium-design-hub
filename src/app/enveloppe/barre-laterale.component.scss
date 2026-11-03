@@ -1,100 +1,215 @@
+// Tokens du menu latéral du kit (shell du SIRH). Contrastes mesurés sur le fond nav-bg (#101828) :
+// titres 17,0:1 ; textes des items et catégories inactives 6,8:1 ; survol 9,9:1 ; actif 9,4:1 ; badges 4,6:1.
 :host {
   display: flex;
   flex-direction: column;
-  gap: var(--bridges-position-gap-xl);
-  padding: var(--bridges-position-padding-xl) var(--bridges-position-padding-lg);
+  gap: var(--index-navigation-sidenavigation-section-gap);
+  padding: var(--bridges-position-padding-xl) var(--index-navigation-sidenavigation-nav-padding-h);
+  font-family: var(--index-navigation-sidenavigation-item-font);
 }
 
 .marque {
-  padding: 0 var(--bridges-position-padding-md);
-  font-family: var(--bridges-shape-text-heading-2-font);
-  font-weight: var(--bridges-shape-text-heading-2-weight);
-  font-size: var(--bridges-size-text-text-size-lg);
-  color: var(--bridges-color-text-primary);
+  padding: 0 var(--index-navigation-sidenavigation-title-padding-h);
+  font-family: var(--index-navigation-sidenavigation-title-font);
+  font-weight: var(--index-navigation-sidenavigation-title-weight);
+  font-size: var(--index-navigation-sidenavigation-title-size);
+  color: var(--index-navigation-sidenavigation-title-text);
   text-decoration: none;
 }
 
 nav {
   display: flex;
   flex-direction: column;
-  gap: var(--bridges-position-gap-2xs);
+  gap: var(--index-navigation-sidenavigation-section-gap);
 }
 
-.rubrique,
-.categorie {
-  margin: 0;
-  padding: 0 var(--bridges-position-padding-md);
-  font-family: var(--bridges-shape-text-label-font);
-  font-weight: var(--bridges-shape-text-label-weight);
-  font-size: var(--bridges-size-text-text-size-xs);
-  color: var(--bridges-color-text-secondary);
-}
-
-.rubrique {
-  margin-top: var(--bridges-position-gap-lg);
-  text-transform: uppercase;
-}
-
-.categorie {
-  margin-top: var(--bridges-position-gap-sm);
-  color: var(--bridges-color-text-tertiary);
-}
-
-.rubrique a {
-  color: inherit;
-  text-decoration: none;
-
-  &:hover,
-  &.actif-rubrique {
-    color: var(--bridges-color-text-action);
+a,
+button {
+  &:focus-visible {
+    outline: var(--bridges-shape-figure-border-stroke-emphasis) solid var(--index-navigation-sidenavigation-title-text);
+    outline-offset: calc(-1 * var(--bridges-shape-figure-border-stroke-emphasis));
   }
 }
 
-.compte {
-  margin-left: auto;
-  font-size: var(--bridges-size-text-text-size-xs);
-  color: var(--bridges-color-text-tertiary);
-}
-
-.lien {
-  padding: var(--bridges-position-padding-3xs) var(--bridges-position-padding-md);
-  border-radius: var(--bridges-shape-figure-radius-md);
-  font-size: var(--bridges-size-text-text-size-sm);
-  color: var(--bridges-color-text-primary);
-  text-decoration: none;
-
+// Niveau 1 : sections, plus grandes, en gras, avec icône ; repliables par le chevron.
+.n1 {
   display: flex;
-  align-items: baseline;
-  gap: var(--bridges-position-gap-sm);
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--index-navigation-sidenavigation-item-gap);
+}
 
-  &.sous {
-    padding-left: var(--bridges-position-padding-xl);
-  }
+.n1-lien,
+.n1-titre {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: var(--index-navigation-sidenavigation-item-gap);
+  padding: var(--bridges-position-padding-xs) var(--index-navigation-sidenavigation-item-padding-h);
+  border-left: var(--index-navigation-sidenavigation-item-border-width) solid transparent;
+  border-radius: var(--index-navigation-sidenavigation-item-radius-left) var(--index-navigation-sidenavigation-item-radius-right)
+    var(--index-navigation-sidenavigation-item-radius-right) var(--index-navigation-sidenavigation-item-radius-left);
+  font-weight: var(--index-navigation-sidenavigation-title-weight);
+  font-size: var(--bridges-size-text-text-size-md);
+  color: var(--index-navigation-sidenavigation-title-text);
+  text-decoration: none;
 
-  &.ecran {
-    padding-left: var(--bridges-position-padding-3xl);
-    font-size: var(--bridges-size-text-text-size-xs);
-  }
-
-  &.inactif {
-    color: var(--bridges-color-text-tertiary);
-
-    &:hover {
-      background: none;
-    }
+  .icone {
+    flex-shrink: 0;
+    width: var(--bridges-size-icon-md);
+    height: var(--bridges-size-icon-md);
+    color: var(--index-navigation-sidenavigation-title-icon);
   }
 
   &:hover {
-    background: var(--bridges-color-background-layer-1);
-  }
-
-  &:focus-visible {
-    outline: var(--bridges-shape-figure-border-stroke-emphasis) solid var(--bridges-color-border-focus);
+    background: var(--index-navigation-sidenavigation-item-bg-hover);
   }
 
   &.actif {
-    background: var(--bridges-color-surface-selected);
-    color: var(--bridges-color-text-action);
-    font-weight: var(--bridges-shape-text-label-weight);
+    background: var(--index-navigation-sidenavigation-item-bg-selected);
+    border-left-color: var(--index-navigation-sidenavigation-item-border-selected);
+    color: var(--index-navigation-sidenavigation-item-text-selected);
+
+    .icone {
+      color: var(--index-navigation-sidenavigation-item-icon-selected);
+    }
+  }
+}
+
+.chevron {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  padding: var(--bridges-position-padding-xs);
+  border: 0;
+  border-radius: var(--index-navigation-sidenavigation-item-radius-left);
+  background: none;
+  color: var(--index-navigation-sidenavigation-menu-title-chevron);
+  cursor: pointer;
+
+  svg {
+    width: var(--index-navigation-sidenavigation-menu-title-chevron-size);
+    height: var(--index-navigation-sidenavigation-menu-title-chevron-size);
+    transition: transform 0.15s ease;
+  }
+
+  &.replie svg {
+    transform: rotate(-90deg);
+  }
+
+  &.petit {
+    padding: var(--bridges-position-padding-tiny);
+  }
+
+  &:hover {
+    background: var(--index-navigation-sidenavigation-item-bg-hover);
+    color: var(--index-navigation-sidenavigation-item-icon-hover);
+  }
+}
+
+.contenu {
+  display: flex;
+  flex-direction: column;
+  gap: var(--index-navigation-sidenavigation-items-gap);
+}
+
+// Niveau 2 : catégories et produits, petit titre contrasté, plus d'espace au-dessus.
+.n2 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--index-navigation-sidenavigation-item-gap);
+  margin: var(--bridges-position-gap-lg) 0 var(--bridges-position-gap-2xs);
+  padding: 0 var(--index-navigation-sidenavigation-item-padding-h) 0 var(--bridges-position-padding-xl);
+  font-weight: var(--index-navigation-sidenavigation-title-weight);
+  font-size: var(--bridges-size-text-text-size-xs);
+  text-transform: uppercase;
+  color: var(--index-navigation-sidenavigation-title-text);
+
+  &:first-child {
+    margin-top: var(--bridges-position-gap-sm);
+  }
+}
+
+.n2-ligne {
+  padding-right: 0;
+}
+
+.n2-lien {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: var(--index-navigation-sidenavigation-item-gap);
+  color: inherit;
+  text-decoration: none;
+
+  &:hover {
+    color: var(--index-navigation-sidenavigation-item-text-selected);
+  }
+
+  &.actif {
+    color: var(--index-navigation-sidenavigation-item-text-selected);
+  }
+}
+
+.n2.inactif {
+  // Réserve la place du chevron des produits dépliables : tous les badges s'alignent à droite.
+  padding-right: calc(
+    var(--index-navigation-sidenavigation-menu-title-chevron-size) + 2 * var(--bridges-position-padding-tiny) +
+      var(--index-navigation-sidenavigation-item-gap)
+  );
+  color: var(--index-navigation-sidenavigation-item-text-default);
+}
+
+// Niveau 3 : composants et écrans, en retrait ; actif avec fond et barre d'accent à gauche, comme dans le SIRH.
+.n3 {
+  margin-left: var(--bridges-position-padding-xl);
+  padding: var(--index-navigation-sidenavigation-item-padding-v) var(--index-navigation-sidenavigation-item-padding-h);
+  border-left: var(--index-navigation-sidenavigation-item-border-width) solid transparent;
+  border-radius: var(--index-navigation-sidenavigation-item-radius-left) var(--index-navigation-sidenavigation-item-radius-right)
+    var(--index-navigation-sidenavigation-item-radius-right) var(--index-navigation-sidenavigation-item-radius-left);
+  font-weight: var(--index-navigation-sidenavigation-item-weight);
+  font-size: var(--index-navigation-sidenavigation-item-size);
+  color: var(--index-navigation-sidenavigation-item-text-default);
+  text-decoration: none;
+
+  &:hover {
+    background: var(--index-navigation-sidenavigation-item-bg-hover);
+    color: var(--index-navigation-sidenavigation-item-text-hover);
+  }
+
+  &.actif {
+    background: var(--index-navigation-sidenavigation-item-bg-selected);
+    border-left-color: var(--index-navigation-sidenavigation-item-border-selected);
+    color: var(--index-navigation-sidenavigation-item-text-selected);
+  }
+}
+
+// Compteurs et « Bientôt » : petits badges alignés à droite.
+.badge {
+  flex-shrink: 0;
+  margin-left: auto;
+  padding: var(--bridges-position-padding-tiny) var(--bridges-position-padding-3xs);
+  border-radius: var(--bridges-shape-figure-radius-full);
+  background: var(--bridges-color-surface-nav-field);
+  font-weight: var(--index-navigation-sidenavigation-item-weight);
+  font-size: var(--bridges-size-text-text-size-xs);
+  text-transform: none;
+  color: var(--index-navigation-sidenavigation-item-text-default);
+}
+
+.lecteur {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chevron svg {
+    transition: none;
   }
 }

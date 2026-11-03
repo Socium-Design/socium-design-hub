@@ -8,27 +8,85 @@ import { rechercher } from './recherche';
 describe('Enveloppe', () => {
   beforeEach(() => TestBed.configureTestingModule({ providers: [provideRouter(routes, withComponentInputBinding())] }));
 
-  it('affiche la barre latérale groupée par catégorie et la version du kit', async () => {
-    const harness = await RouterTestingHarness.create('/demarrer');
+  const texte = (e: Element) => e.textContent?.replace(/\s+/g, ' ').trim();
+
+  it('affiche les trois niveaux sur une page composant, Prototypes replié', async () => {
+    const harness = await RouterTestingHarness.create('/composants/tag');
     const page = harness.fixture.nativeElement as HTMLElement;
-    const liens = [...page.querySelectorAll('app-barre-laterale a')].map((a) => a.textContent?.replace(/\s+/g, ' ').trim());
-    expect(liens).toEqual([
-      'Socium Design Hub',
-      'Démarrer',
+    const barre = page.querySelector('app-barre-laterale') as HTMLElement;
+
+    expect([...barre.querySelectorAll('.n1-lien, .n1-titre')].map(texte)).toEqual(['Démarrer', 'Composants', 'Prototypes']);
+    expect([...barre.querySelectorAll('#section-composants .n2')].map(texte)).toEqual([
+      'Actions',
+      'Saisie',
+      'Sélection',
+      'Navigation',
+      'Feedback',
+    ]);
+    expect([...barre.querySelectorAll('#section-composants .n3')].map(texte)).toEqual([
       'Button',
       'Champ texte',
       'Select',
       'Tabs',
       'Tag',
-      'Prototypes',
-      'Workspace 8',
-      'Performance 5',
     ]);
-    const bientot = [...page.querySelectorAll('app-barre-laterale .inactif')].map((s) => s.textContent?.replace(/\s+/g, ' ').trim());
-    expect(bientot).toEqual(['Payroll Bientôt', 'Workflow Bientôt', 'Doc Bientôt', 'Job Bientôt', 'Time Bientôt']);
-    const categories = [...page.querySelectorAll('app-barre-laterale .categorie')].map((c) => c.textContent);
-    expect(categories).toEqual(['Actions', 'Saisie', 'Sélection', 'Navigation', 'Feedback']);
+    expect(barre.querySelector('#section-prototypes')).toBeNull();
+    expect(barre.querySelector('button[aria-controls="section-prototypes"]')?.getAttribute('aria-expanded')).toBe('false');
     expect(page.querySelector('app-en-tete')?.textContent).toMatch(/v\d+\.\d+\.\d+/);
+  });
+
+  it('sur une page prototype, replie Composants et ne déplie que le produit en cours', async () => {
+    const harness = await RouterTestingHarness.create('/prototypes/performance/objectifs');
+    const barre = harness.fixture.nativeElement.querySelector('app-barre-laterale') as HTMLElement;
+
+    expect(barre.querySelector('#section-composants')).toBeNull();
+    expect([...barre.querySelectorAll('#section-prototypes .n2')].map(texte)).toEqual([
+      'Workspace 8 écrans',
+      'Performance 5 écrans',
+      'Payroll Bientôt',
+      'Workflow Bientôt',
+      'Doc Bientôt',
+      'Job Bientôt',
+      'Time Bientôt',
+    ]);
+    expect(barre.querySelector('#produit-workspace')).toBeNull();
+    expect(barre.querySelectorAll('#produit-performance .n3').length).toBe(5);
+
+    // Le chevron déplie un autre produit…
+    (barre.querySelector('button[aria-controls="produit-workspace"]') as HTMLButtonElement).click();
+    harness.detectChanges();
+    expect(barre.querySelectorAll('#produit-workspace .n3').length).toBe(8);
+
+    // … et l'état revient au défaut quand on change de produit.
+    await harness.navigateByUrl('/prototypes/workspace');
+    expect(barre.querySelector('#produit-performance')).toBeNull();
+    expect(barre.querySelector('#produit-workspace')).not.toBeNull();
+  });
+
+  it('replie et déplie une section avec son chevron', async () => {
+    const harness = await RouterTestingHarness.create('/composants/button');
+    const barre = harness.fixture.nativeElement.querySelector('app-barre-laterale') as HTMLElement;
+    const chevron = barre.querySelector('button[aria-controls="section-prototypes"]') as HTMLButtonElement;
+
+    chevron.click();
+    harness.detectChanges();
+    expect(chevron.getAttribute('aria-expanded')).toBe('true');
+    expect(barre.querySelector('#section-prototypes')).not.toBeNull();
+
+    // Une navigation dans la même section garde ce choix.
+    await harness.navigateByUrl('/composants/tag');
+    expect(barre.querySelector('#section-prototypes')).not.toBeNull();
+
+    chevron.click();
+    harness.detectChanges();
+    expect(barre.querySelector('#section-prototypes')).toBeNull();
+  });
+
+  it('marque l’élément actif du niveau 3', async () => {
+    const harness = await RouterTestingHarness.create('/composants/tag');
+    const actif = harness.fixture.nativeElement.querySelector('app-barre-laterale .n3.actif') as HTMLElement;
+    expect(actif.textContent?.trim()).toBe('Tag');
+    expect(actif.getAttribute('aria-current')).toBe('page');
   });
 
   it('ouvre et ferme la barre latérale avec le bouton Menu, puis la ferme à la navigation', async () => {
