@@ -13,8 +13,8 @@
   height: 100vh;
   overflow-y: auto;
   box-sizing: border-box;
-  background: var(--bridges-color-surface-neutral-white);
-  border-right: var(--bridges-shape-figure-border-stroke-default) solid var(--bridges-color-border-subtle);
+  // Fond sombre du menu latéral du kit, comme le shell du SIRH.
+  background: var(--index-navigation-sidenavigation-nav-bg);
 }
 
 .voile {

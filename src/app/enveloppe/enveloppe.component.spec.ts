@@ -8,27 +8,61 @@ import { rechercher } from './recherche';
 describe('Enveloppe', () => {
   beforeEach(() => TestBed.configureTestingModule({ providers: [provideRouter(routes, withComponentInputBinding())] }));
 
-  it('affiche la barre latérale groupée par catégorie et la version du kit', async () => {
+  it('affiche la barre latérale en trois niveaux et la version du kit', async () => {
     const harness = await RouterTestingHarness.create('/demarrer');
     const page = harness.fixture.nativeElement as HTMLElement;
-    const liens = [...page.querySelectorAll('app-barre-laterale a')].map((a) => a.textContent?.replace(/\s+/g, ' ').trim());
-    expect(liens).toEqual([
-      'Socium Design Hub',
-      'Démarrer',
+    const barre = page.querySelector('app-barre-laterale') as HTMLElement;
+    const texte = (e: Element) => e.textContent?.replace(/\s+/g, ' ').trim();
+
+    expect([...barre.querySelectorAll('.n1-lien, .n1-titre')].map(texte)).toEqual(['Démarrer', 'Composants', 'Prototypes']);
+    expect([...barre.querySelectorAll('#section-composants .n2')].map(texte)).toEqual([
+      'Actions',
+      'Saisie',
+      'Sélection',
+      'Navigation',
+      'Feedback',
+    ]);
+    expect([...barre.querySelectorAll('#section-composants .n3')].map(texte)).toEqual([
       'Button',
       'Champ texte',
       'Select',
       'Tabs',
       'Tag',
-      'Prototypes',
-      'Workspace 8',
-      'Performance 5',
     ]);
-    const bientot = [...page.querySelectorAll('app-barre-laterale .inactif')].map((s) => s.textContent?.replace(/\s+/g, ' ').trim());
-    expect(bientot).toEqual(['Payroll Bientôt', 'Workflow Bientôt', 'Doc Bientôt', 'Job Bientôt', 'Time Bientôt']);
-    const categories = [...page.querySelectorAll('app-barre-laterale .categorie')].map((c) => c.textContent);
-    expect(categories).toEqual(['Actions', 'Saisie', 'Sélection', 'Navigation', 'Feedback']);
+    expect([...barre.querySelectorAll('#section-prototypes .n2')].map(texte)).toEqual([
+      'Workspace 8 écrans',
+      'Performance 5 écrans',
+      'Payroll Bientôt',
+      'Workflow Bientôt',
+      'Doc Bientôt',
+      'Job Bientôt',
+      'Time Bientôt',
+    ]);
+    expect(barre.querySelectorAll('#section-prototypes .n3').length).toBe(13);
     expect(page.querySelector('app-en-tete')?.textContent).toMatch(/v\d+\.\d+\.\d+/);
+  });
+
+  it('replie et déplie une section avec son chevron', async () => {
+    const harness = await RouterTestingHarness.create('/demarrer');
+    const barre = harness.fixture.nativeElement.querySelector('app-barre-laterale') as HTMLElement;
+    const chevron = barre.querySelector('button[aria-controls="section-composants"]') as HTMLButtonElement;
+    expect(chevron.getAttribute('aria-expanded')).toBe('true');
+
+    chevron.click();
+    harness.detectChanges();
+    expect(chevron.getAttribute('aria-expanded')).toBe('false');
+    expect(barre.querySelector('#section-composants')).toBeNull();
+
+    chevron.click();
+    harness.detectChanges();
+    expect(barre.querySelector('#section-composants')).not.toBeNull();
+  });
+
+  it('marque l’élément actif du niveau 3', async () => {
+    const harness = await RouterTestingHarness.create('/composants/tag');
+    const actif = harness.fixture.nativeElement.querySelector('app-barre-laterale .n3.actif') as HTMLElement;
+    expect(actif.textContent?.trim()).toBe('Tag');
+    expect(actif.getAttribute('aria-current')).toBe('page');
   });
 
   it('ouvre et ferme la barre latérale avec le bouton Menu, puis la ferme à la navigation', async () => {
