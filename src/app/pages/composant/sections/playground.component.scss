@@ -1,0 +1,61 @@
+.haut {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--index-navigation-sidenavigation-nav-width-open);
+
+  // Écran étroit : aperçu au-dessus, réglages en dessous.
+  @media (max-width: 1023px) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.apercu {
+  align-self: center;
+}
+
+.reglages {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bridges-position-gap-lg);
+  padding: var(--bridges-position-padding-xl);
+  border-left: var(--bridges-shape-figure-border-stroke-default) solid var(--bridges-color-border-subtle);
+
+  @media (max-width: 1023px) {
+    border-left: 0;
+    border-top: var(--bridges-shape-figure-border-stroke-default) solid var(--bridges-color-border-subtle);
+  }
+}
+
+// Nom technique en petit, aligné à droite sur la ligne du libellé.
+.reglage {
+  position: relative;
+
+  // Interrupteur : le nom technique reste à droite, ou passe à la ligne s'il manque de place.
+  &.ligne {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--bridges-position-gap-2xs) var(--bridges-position-gap-sm);
+
+    soc-switch {
+      flex-shrink: 0;
+    }
+
+    .technique {
+      margin-left: auto;
+    }
+  }
+}
+
+.technique {
+  color: var(--bridges-color-text-secondary);
+
+  .reglage:not(.ligne) > & {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+}
+
+.code {
+  margin: var(--bridges-position-padding-lg);
+}

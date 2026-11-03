@@ -1,8 +1,5 @@
-/* Styles globaux propres au hub. Les tokens, polices et styles des composants viennent de la feuille du kit
- * (`@socium-design/angular-components/styles.css`, chargée par angular.json). Jamais de valeurs en dur. */
+/* Volontairement neutre : ce fichier s'applique aussi aux aperçus (iframe /apercu), qui ne doivent recevoir que la
+ * feuille du kit. Les styles de l'enveloppe vivent dans ses composants (encapsulés). */
 body {
   margin: 0;
-  background: var(--bridges-color-background-layer-1);
-  color: var(--bridges-color-text-primary);
-  font-family: var(--bridges-shape-text-body-font);
 }

@@ -1,0 +1,63 @@
+:host {
+  display: block;
+}
+
+iframe {
+  display: block;
+  width: 100%;
+  border: 0;
+}
+
+// Squelette affiché tant que l'iframe n'a pas rendu ses exemples. Le kit n'a pas de Skeleton (0.3.6) :
+// c'est un élément de l'enveloppe, pas un composant du kit.
+.squelette {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--bridges-position-gap-xl);
+  padding: var(--bridges-position-padding-2xl) var(--bridges-position-padding-xl);
+  background: var(--bridges-color-surface-neutral-white);
+}
+
+.bloc {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bridges-position-gap-sm);
+}
+
+.forme,
+.legende {
+  display: block;
+  border-radius: var(--bridges-shape-figure-radius-md);
+  background: var(--bridges-color-background-layer-2);
+  animation: pulsation 1.2s ease-in-out infinite alternate;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+.forme {
+  width: calc(var(--bridges-position-padding-4xl) * 2);
+  height: var(--bridges-position-padding-2xl);
+}
+
+.legende {
+  width: var(--bridges-position-padding-4xl);
+  height: var(--bridges-position-padding-sm);
+}
+
+.lecteur {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@keyframes pulsation {
+  to {
+    opacity: 0.4;
+  }
+}

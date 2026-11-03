@@ -1,0 +1,100 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bridges-position-gap-xl);
+  max-width: calc(var(--index-navigation-sidenavigation-nav-width-open) * 5);
+}
+
+.tete {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--bridges-position-gap-sm);
+}
+
+.categorie {
+  margin: 0;
+  font-size: var(--bridges-size-text-text-size-sm);
+  color: var(--bridges-color-text-secondary);
+}
+
+.titre {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--bridges-position-gap-md);
+}
+
+h1 {
+  margin: 0;
+  font-family: var(--bridges-shape-text-heading-1-font);
+  font-weight: var(--bridges-shape-text-heading-1-weight);
+  font-size: var(--bridges-size-text-heading-size-page);
+  line-height: var(--bridges-size-text-line-height-4xl);
+}
+
+h2 {
+  margin: 0 0 var(--bridges-position-gap-lg);
+  font-family: var(--bridges-shape-text-heading-2-font);
+  font-weight: var(--bridges-shape-text-heading-2-weight);
+  font-size: var(--bridges-size-text-text-size-xl);
+}
+
+.source {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--bridges-position-gap-2xs);
+  font-size: var(--bridges-size-text-text-size-sm);
+  color: var(--bridges-color-text-action);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.icone {
+  width: var(--bridges-size-text-text-size-sm);
+  height: var(--bridges-size-text-text-size-sm);
+}
+
+.selecteur {
+  padding: var(--bridges-position-padding-tiny) var(--bridges-position-padding-xs);
+  font-family: var(--bridges-shape-text-code-font);
+  font-size: var(--bridges-size-text-text-size-sm);
+  background: var(--bridges-color-background-layer-2);
+  border-radius: var(--bridges-shape-figure-radius-sm);
+}
+
+.description {
+  margin: 0;
+  color: var(--bridges-color-text-secondary);
+}
+
+.sommaire {
+  display: flex;
+  gap: var(--bridges-position-gap-lg);
+  margin-top: var(--bridges-position-gap-sm);
+
+  a {
+    font-size: var(--bridges-size-text-text-size-sm);
+    color: var(--bridges-color-text-action);
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.carte {
+  overflow: hidden;
+  border: var(--bridges-shape-figure-border-stroke-default) solid var(--bridges-color-border-subtle);
+  border-radius: var(--bridges-shape-figure-radius-xl);
+}
+
+.aide {
+  margin: var(--bridges-position-gap-sm) 0 0;
+  font-size: var(--bridges-size-text-text-size-sm);
+  color: var(--bridges-color-text-secondary);
+}

@@ -1,0 +1,81 @@
+:host {
+  display: grid;
+  grid-template-columns: var(--index-navigation-sidenavigation-nav-width-open) minmax(0, 1fr);
+  min-height: 100vh;
+  background: var(--bridges-color-background-layer-1);
+  color: var(--bridges-color-text-primary);
+  font-family: var(--bridges-shape-text-body-font);
+}
+
+.barre {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  box-sizing: border-box;
+  background: var(--bridges-color-surface-neutral-white);
+  border-right: var(--bridges-shape-figure-border-stroke-default) solid var(--bridges-color-border-subtle);
+}
+
+.voile {
+  display: none;
+}
+
+.entete {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  padding: var(--bridges-position-padding-md) var(--bridges-position-padding-2xl);
+  background: var(--bridges-color-surface-neutral-white);
+  border-bottom: var(--bridges-shape-figure-border-stroke-default) solid var(--bridges-color-border-subtle);
+}
+
+main {
+  padding: var(--bridges-position-padding-2xl);
+}
+
+// Écran étroit : la barre latérale devient un panneau qui glisse par-dessus le contenu.
+@media (max-width: 1023px) {
+  :host {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .barre {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 20;
+    width: var(--index-navigation-sidenavigation-nav-width-open);
+    visibility: hidden;
+    transform: translateX(-100%);
+    transition:
+      transform 0.2s ease,
+      visibility 0.2s;
+  }
+
+  :host(.menu-ouvert) .barre {
+    visibility: visible;
+    transform: none;
+  }
+
+  :host(.menu-ouvert) .voile {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 15;
+    background: var(--index-conteneur-dialog-overlay-color);
+  }
+
+  .entete {
+    padding: var(--bridges-position-padding-md) var(--bridges-position-padding-lg);
+  }
+
+  main {
+    padding: var(--bridges-position-padding-xl) var(--bridges-position-padding-lg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .barre {
+    transition: none;
+  }
+}
