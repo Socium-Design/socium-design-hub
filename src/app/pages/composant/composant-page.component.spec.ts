@@ -30,6 +30,28 @@ describe('ComposantPageComponent', () => {
     expect(api.textContent).toContain('ButtonVariant');
     expect(api.textContent).toContain('[socButtonLeftIcon]');
     expect(api.textContent).toContain('Aucun output déclaré.');
+    expect([...api.querySelectorAll('th')].map((th) => th.textContent)).toEqual(['Nom', 'Type', 'Défaut', 'Marqueur', 'Rôle']);
+    const roles = [...api.querySelectorAll('td.texte')].map((td) => td.textContent?.trim());
+    expect(roles).toEqual(['Icône avant le libellé', 'Libellé du bouton', 'Icône après le libellé']);
+    expect(api.querySelector('app-bloc-code .fichier')?.textContent).toBe('button.ts');
+  });
+
+  it('affiche les réglages en français avec leur nom technique', async () => {
+    const page = await ouvrir('/composants/button');
+    const reglages = [...page.querySelectorAll('.reglage')].map((r) => [
+      r.querySelector('soc-select, soc-input-text, soc-switch')?.textContent?.trim().split('\n')[0].trim(),
+      r.querySelector('.technique')?.textContent,
+    ]);
+    expect(reglages.map(([, t]) => t)).toEqual(['variant', 'size', 'contenu', 'disabled', '[socButtonLeftIcon]', '[socButtonRightIcon]']);
+    expect(page.querySelector('.reglage')?.textContent).toContain('Variante');
+    expect(page.querySelector('app-playground app-bloc-code .fichier')?.textContent).toBe('exemple.component.ts');
+  });
+
+  it('montre un squelette tant que les aperçus ne sont pas chargés', async () => {
+    const page = await ouvrir('/composants/button');
+    const variantes = page.querySelectorAll('app-apercu-frame')[1];
+    expect(variantes.querySelectorAll('.squelette .bloc').length).toBe(5);
+    expect(variantes.querySelector('.squelette')?.textContent).toContain('Chargement de l’aperçu'.replace('’', "'"));
   });
 
   it('met à jour le code quand un réglage change', async () => {
@@ -38,8 +60,13 @@ describe('ComposantPageComponent', () => {
     const champ = page.querySelector('soc-input-text input') as HTMLInputElement;
     champ.value = 'Valider';
     champ.dispatchEvent(new Event('input'));
-    harness.detectChanges();
-    expect(page.querySelector('pre code')?.textContent).toContain('Valider');
+    // La coloration Shiki est asynchrone : on attend que le bloc affiche le nouveau code.
+    const code = () => page.querySelector('app-playground app-bloc-code pre')?.textContent ?? '';
+    for (let i = 0; i < 60 && !code().includes('Valider'); i++) {
+      await new Promise((fin) => setTimeout(fin, 50));
+      harness.detectChanges();
+    }
+    expect(code()).toContain('Valider');
   });
 
   it('signale une fiche inconnue', async () => {

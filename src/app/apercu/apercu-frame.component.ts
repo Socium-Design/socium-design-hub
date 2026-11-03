@@ -6,7 +6,22 @@ import { CANAL, MessageApercu, estMessageApercu } from './messages';
 /** Iframe d'aperçu isolé : une par section (playground, variantes, états), tous ses exemples y sont rendus. */
 @Component({
   selector: 'app-apercu-frame',
-  template: `<iframe #cadre [src]="src()" [title]="titre()" [style.height.px]="hauteur()"></iframe>`,
+  template: `
+    @if (hauteur() === null) {
+      <div class="squelette" role="status" aria-live="polite">
+        <span class="lecteur">Chargement de l'aperçu…</span>
+        @for (exemple of exemples(); track exemple.id) {
+          <div class="bloc" aria-hidden="true">
+            <span class="forme"></span>
+            @if (legendes()) {
+              <span class="legende"></span>
+            }
+          </div>
+        }
+      </div>
+    }
+    <iframe #cadre [src]="src()" [title]="titre()" [style.height.px]="hauteur() ?? 0" [attr.aria-hidden]="hauteur() === null"></iframe>
+  `,
   styleUrl: './apercu-frame.component.scss',
 })
 export class ApercuFrameComponent {
@@ -39,6 +54,7 @@ export class ApercuFrameComponent {
     effect(() => {
       this.composant();
       this.pret.set(false);
+      this.hauteur.set(null);
     });
 
     effect(() => {

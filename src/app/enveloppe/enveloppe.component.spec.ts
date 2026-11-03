@@ -17,6 +17,22 @@ describe('Enveloppe', () => {
     expect(page.querySelector('app-en-tete')?.textContent).toMatch(/v\d+\.\d+\.\d+/);
   });
 
+  it('ouvre et ferme la barre latérale avec le bouton Menu, puis la ferme à la navigation', async () => {
+    const harness = await RouterTestingHarness.create('/demarrer');
+    const page = harness.fixture.nativeElement as HTMLElement;
+    const enveloppe = page.querySelector('app-enveloppe') as HTMLElement;
+    const menu = page.querySelector('button.menu') as HTMLButtonElement;
+    expect(menu.getAttribute('aria-expanded')).toBe('false');
+
+    menu.click();
+    harness.detectChanges();
+    expect(enveloppe.classList).toContain('menu-ouvert');
+    expect(menu.getAttribute('aria-expanded')).toBe('true');
+
+    await harness.navigateByUrl('/composants/button');
+    expect(enveloppe.classList).not.toContain('menu-ouvert');
+  });
+
   it('ouvre le premier résultat de recherche avec Entrée', async () => {
     const harness = await RouterTestingHarness.create('/demarrer');
     const page = harness.fixture.nativeElement as HTMLElement;

@@ -15,6 +15,7 @@ export interface ReglageInput {
   cle: string;
   type: 'input';
   controle: 'select';
+  libelle: string;
 }
 
 /** Texte projeté dans le slot par défaut. */
@@ -51,6 +52,18 @@ export interface ReglageSlot {
 
 export type Reglage = ReglageInput | ReglageContenu | ReglageNatif | ReglageSlot;
 
+/** Nom technique d'un réglage, affiché en petit à côté de son libellé. */
+export function nomTechnique(reglage: Reglage): string {
+  switch (reglage.type) {
+    case 'slot':
+      return reglage.slot;
+    case 'contenu':
+      return 'contenu';
+    default:
+      return reglage.cle;
+  }
+}
+
 export interface Exemple {
   id: string;
   titre: string;
@@ -69,6 +82,8 @@ export interface FicheComposant {
   /** Attributs fixes écrits dans le code généré (`type="button"`). */
   attributs?: string[];
   reglages: Reglage[];
+  /** Rôle court, en français, de chaque slot du kit (`default` pour le contenu par défaut). */
+  slots: Record<string, string>;
   /** Une ligne par valeur de ce réglage dans la section « Variantes ». */
   variantes: { reglage: string };
   etats: Exemple[];

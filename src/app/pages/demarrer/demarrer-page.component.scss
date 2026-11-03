@@ -36,18 +36,10 @@ li {
   display: flex;
   flex-direction: column;
   gap: var(--bridges-position-gap-sm);
+  min-width: 0;
 }
 
-code {
+p code {
   font-family: var(--bridges-shape-text-code-font);
   font-size: var(--bridges-size-text-text-size-sm);
-}
-
-pre {
-  margin: 0;
-  padding: var(--bridges-position-padding-md) var(--bridges-position-padding-lg);
-  overflow-x: auto;
-  background: var(--bridges-color-surface-neutral-white);
-  border: var(--bridges-shape-figure-border-stroke-default) solid var(--bridges-color-border-subtle);
-  border-radius: var(--bridges-shape-figure-radius-lg);
 }

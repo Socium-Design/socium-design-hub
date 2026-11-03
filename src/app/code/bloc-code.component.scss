@@ -1,0 +1,43 @@
+app-bloc-code {
+  display: block;
+  overflow: hidden;
+  background: var(--code-fond);
+  border: var(--bridges-shape-figure-border-stroke-default) solid var(--code-bordure);
+  border-radius: var(--bridges-shape-figure-radius-lg);
+
+  .entete {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--bridges-position-gap-md);
+    padding: var(--bridges-position-padding-3xs) var(--bridges-position-padding-3xs) var(--bridges-position-padding-3xs)
+      var(--bridges-position-padding-lg);
+    background: var(--code-entete-fond);
+    border-bottom: var(--bridges-shape-figure-border-stroke-default) solid var(--code-bordure);
+  }
+
+  .fichier {
+    font-family: var(--bridges-shape-text-code-font);
+    font-size: var(--bridges-size-text-text-size-xs);
+    color: var(--code-entete-texte);
+  }
+
+  .contenu pre {
+    margin: 0;
+    padding: var(--bridges-position-padding-lg);
+    overflow-x: auto;
+    color: var(--code-texte);
+    font-family: var(--bridges-shape-text-code-font);
+    font-size: var(--bridges-size-text-text-size-xs);
+    line-height: var(--bridges-size-text-line-height-md);
+
+    &:focus-visible {
+      outline: var(--bridges-shape-figure-border-stroke-emphasis) solid var(--bridges-color-border-focus);
+      outline-offset: calc(-1 * var(--bridges-shape-figure-border-stroke-emphasis));
+    }
+  }
+
+  .contenu code {
+    font-family: inherit;
+  }
+}

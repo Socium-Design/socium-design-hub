@@ -1,6 +1,7 @@
-import { Component, ElementRef, computed, inject, signal } from '@angular/core';
+import { Component, ElementRef, computed, inject, input, output, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { SocSearchBar, SocTag } from '@socium-design/angular-components';
+import { LucideMenu, LucideX } from '@lucide/angular';
+import { SocButton, SocButtonLeftIcon, SocSearchBar, SocTag } from '@socium-design/angular-components';
 import { composantApi, KIT_VERSION } from '../catalogue/api-kit';
 import { CATALOGUE } from '../catalogue/catalogue';
 import { FicheComposant } from '../catalogue/fiche.model';
@@ -8,9 +9,25 @@ import { rechercher } from './recherche';
 
 @Component({
   selector: 'app-en-tete',
-  imports: [SocSearchBar, SocTag, RouterLink],
+  imports: [SocSearchBar, SocTag, SocButton, SocButtonLeftIcon, LucideMenu, LucideX, RouterLink],
   host: { '(document:click)': 'fermerSiDehors($event)' },
   template: `
+    <button
+      socButton
+      type="button"
+      variant="ghost"
+      class="menu"
+      aria-controls="barre-laterale"
+      [attr.aria-expanded]="menuOuvert()"
+      (click)="basculerMenu.emit()"
+    >
+      @if (menuOuvert()) {
+        <svg lucideX socButtonLeftIcon class="size-full" [strokeWidth]="1.5"></svg>
+      } @else {
+        <svg lucideMenu socButtonLeftIcon class="size-full" [strokeWidth]="1.5"></svg>
+      }
+      Menu
+    </button>
     <div class="recherche" (keydown.enter)="ouvrirPremier()" (keydown.escape)="vider()">
       <soc-search-bar
         placeholder="Rechercher un composant ou un sélecteur…"
@@ -43,6 +60,9 @@ import { rechercher } from './recherche';
 export class EnTeteComponent {
   private readonly router = inject(Router);
   private readonly hote = inject<ElementRef<HTMLElement>>(ElementRef);
+
+  readonly menuOuvert = input(false);
+  readonly basculerMenu = output<void>();
 
   readonly version = KIT_VERSION;
   readonly requete = signal('');

@@ -25,6 +25,7 @@
     "@angular/router": "^19.2.0",
     "@socium-design/angular-components": "^0.3.6",
     "rxjs": "~7.8.0",
+    "shiki": "^4.6.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
   },

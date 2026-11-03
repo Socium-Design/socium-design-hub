@@ -3,6 +3,19 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--bridges-position-gap-xl);
+
+  @media (max-width: 1023px) {
+    gap: var(--bridges-position-gap-md);
+  }
+}
+
+.menu {
+  display: none;
+
+  @media (max-width: 1023px) {
+    display: inline-flex;
+    flex-shrink: 0;
+  }
 }
 
 .recherche {
@@ -55,6 +68,7 @@
 
 .version {
   display: flex;
+  flex-shrink: 0;
   align-items: center;
   gap: var(--bridges-position-gap-sm);
   font-size: var(--bridges-size-text-text-size-sm);

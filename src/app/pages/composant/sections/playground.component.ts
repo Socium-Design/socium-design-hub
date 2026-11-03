@@ -1,68 +1,51 @@
-import { Component, computed, input, linkedSignal, signal } from '@angular/core';
-import { LucideCheck, LucideCopy } from '@lucide/angular';
-import {
-  SelectOption,
-  SocButton,
-  SocButtonLeftIcon,
-  SocInputText,
-  SocSelect,
-  SocSwitch,
-} from '@socium-design/angular-components';
+import { Component, computed, input, linkedSignal } from '@angular/core';
+import { SelectOption, SocInputText, SocSelect, SocSwitch } from '@socium-design/angular-components';
 import { ApercuFrameComponent } from '../../../apercu/apercu-frame.component';
 import { codeAngular } from '../../../catalogue/code-angular';
-import { FicheComposant, Reglage } from '../../../catalogue/fiche.model';
+import { FicheComposant, Reglage, nomTechnique } from '../../../catalogue/fiche.model';
 import { optionsReglage, valeursParDefaut } from '../../../catalogue/reglages';
+import { BlocCodeComponent } from '../../../code/bloc-code.component';
 
 @Component({
   selector: 'app-playground',
-  imports: [ApercuFrameComponent, SocSelect, SocInputText, SocSwitch, SocButton, SocButtonLeftIcon, LucideCopy, LucideCheck],
+  imports: [ApercuFrameComponent, BlocCodeComponent, SocSelect, SocInputText, SocSwitch],
   template: `
     <div class="carte">
       <div class="haut">
         <app-apercu-frame class="apercu" [composant]="fiche().id" [exemples]="exemple()" [titre]="'Aperçu de ' + fiche().titre" />
         <form class="reglages" aria-label="Réglages" (submit)="$event.preventDefault()">
           @for (reglage of fiche().reglages; track reglage.cle) {
-            @switch (reglage.controle) {
-              @case ('select') {
-                <soc-select
-                  [label]="reglage.cle"
-                  [options]="options(reglage)"
-                  [value]="texte(reglage.cle)"
-                  (valueChange)="changer(reglage.cle, $event)"
-                />
+            <div class="reglage" [class.ligne]="reglage.controle === 'interrupteur'">
+              @switch (reglage.controle) {
+                @case ('select') {
+                  <soc-select
+                    [label]="reglage.libelle"
+                    [options]="options(reglage)"
+                    [value]="texte(reglage.cle)"
+                    (valueChange)="changer(reglage.cle, $event)"
+                  />
+                }
+                @case ('texte') {
+                  <soc-input-text
+                    [label]="reglage.libelle"
+                    [value]="texte(reglage.cle)"
+                    (valueChange)="changer(reglage.cle, $event)"
+                  />
+                }
+                @case ('interrupteur') {
+                  <soc-switch
+                    [label]="reglage.libelle"
+                    [checked]="valeurs()[reglage.cle] === true"
+                    (checkedChange)="changer(reglage.cle, $event)"
+                  />
+                }
               }
-              @case ('texte') {
-                <soc-input-text
-                  [label]="libelle(reglage)"
-                  [value]="texte(reglage.cle)"
-                  (valueChange)="changer(reglage.cle, $event)"
-                />
-              }
-              @case ('interrupteur') {
-                <soc-switch
-                  [label]="libelle(reglage)"
-                  [checked]="valeurs()[reglage.cle] === true"
-                  (checkedChange)="changer(reglage.cle, $event)"
-                />
-              }
-            }
+              <code class="technique" aria-hidden="true">{{ technique(reglage) }}</code>
+            </div>
           }
         </form>
       </div>
-      <div class="code">
-        <div class="code-barre">
-          <span>Code Angular</span>
-          <button socButton type="button" variant="secondary" (click)="copier()">
-            @if (copie()) {
-              <svg lucideCheck socButtonLeftIcon class="size-full" [strokeWidth]="1.5"></svg>
-            } @else {
-              <svg lucideCopy socButtonLeftIcon class="size-full" [strokeWidth]="1.5"></svg>
-            }
-            {{ copie() ? 'Copié' : 'Copier' }}
-          </button>
-        </div>
-        <pre><code>{{ code() }}</code></pre>
-      </div>
+      <app-bloc-code class="code" [code]="code()" langage="angular-ts" fichier="exemple.component.ts" />
     </div>
   `,
   styleUrls: ['./section.scss', './playground.component.scss'],
@@ -73,15 +56,13 @@ export class PlaygroundComponent {
   readonly valeurs = linkedSignal(() => valeursParDefaut(this.fiche()));
   readonly exemple = computed(() => [{ id: 'playground', titre: this.fiche().titre, valeurs: this.valeurs() }]);
   readonly code = computed(() => codeAngular(this.fiche(), this.valeurs()));
-  readonly copie = signal(false);
-  private minuterie?: ReturnType<typeof setTimeout>;
 
   options(reglage: Reglage): SelectOption[] {
     return optionsReglage(this.fiche(), reglage).map((v) => ({ value: v, label: v }));
   }
 
-  libelle(reglage: Reglage): string {
-    return reglage.type === 'input' ? reglage.cle : reglage.libelle;
+  technique(reglage: Reglage): string {
+    return nomTechnique(reglage);
   }
 
   texte(cle: string): string {
@@ -90,12 +71,5 @@ export class PlaygroundComponent {
 
   changer(cle: string, valeur: string | boolean | undefined): void {
     this.valeurs.update((v) => ({ ...v, [cle]: valeur ?? '' }));
-  }
-
-  async copier(): Promise<void> {
-    await navigator.clipboard.writeText(this.code());
-    this.copie.set(true);
-    clearTimeout(this.minuterie);
-    this.minuterie = setTimeout(() => this.copie.set(false), 2000);
   }
 }

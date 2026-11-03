@@ -5,6 +5,15 @@ h3 {
   font-size: var(--bridges-size-text-text-size-md);
 }
 
+// Les tableaux défilent horizontalement dans leur cadre plutôt que d'être coupés.
+.defile {
+  overflow-x: auto;
+
+  &:focus-visible {
+    outline: var(--bridges-shape-figure-border-stroke-emphasis) solid var(--bridges-color-border-focus);
+  }
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
@@ -16,7 +25,13 @@ td {
   padding: var(--bridges-position-padding-md) var(--bridges-position-padding-lg);
   text-align: left;
   vertical-align: top;
+  white-space: nowrap;
   border-bottom: var(--bridges-shape-figure-border-stroke-default) solid var(--bridges-color-border-subtle);
+
+  &.texte {
+    min-width: calc(var(--index-navigation-sidenavigation-nav-width-open) * 1.5);
+    white-space: normal;
+  }
 }
 
 th {
@@ -32,12 +47,6 @@ tbody tr:last-child td {
 
 .liaison {
   color: var(--bridges-color-text-action);
-}
-
-.types pre {
-  margin: 0;
-  padding: var(--bridges-position-padding-md) var(--bridges-position-padding-lg);
-  white-space: pre-wrap;
 }
 
 .note,

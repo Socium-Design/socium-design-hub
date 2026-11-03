@@ -48,9 +48,12 @@ export class ApercuPageComponent {
     };
     window.addEventListener('message', ecouter);
 
-    const observateur = new ResizeObserver(() =>
-      this.envoyer({ canal: CANAL, type: 'hauteur', hauteur: this.hote.nativeElement.offsetHeight }),
-    );
+    // La hauteur n'est envoyée qu'une fois des exemples rendus : la page parente affiche son squelette jusque-là.
+    const observateur = new ResizeObserver(() => {
+      if (this.gabarit() && this.exemples().length) {
+        this.envoyer({ canal: CANAL, type: 'hauteur', hauteur: this.hote.nativeElement.offsetHeight });
+      }
+    });
     observateur.observe(this.hote.nativeElement);
 
     inject(DestroyRef).onDestroy(() => {

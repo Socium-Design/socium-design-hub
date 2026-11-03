@@ -69,7 +69,7 @@ const STATUTS: Record<Statut, { libelle: string; couleur: TagColor }> = {
 
       <section aria-labelledby="api">
         <h2 id="api">API</h2>
-        <app-api [api]="a" />
+        <app-api [api]="a" [roles]="fiche.slots" />
       </section>
     } @else {
       <h1>Composant introuvable</h1>

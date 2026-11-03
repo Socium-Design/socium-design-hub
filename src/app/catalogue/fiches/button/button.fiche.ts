@@ -10,8 +10,8 @@ export const BUTTON: FicheComposant = {
     "Bouton d'action posé sur un vrai <button> : les attributs et événements natifs (type, disabled, click, aria-label) s'utilisent tels quels.",
   attributs: ['type="button"'],
   reglages: [
-    { cle: 'variant', type: 'input', controle: 'select' },
-    { cle: 'size', type: 'input', controle: 'select' },
+    { cle: 'variant', type: 'input', controle: 'select', libelle: 'Variante' },
+    { cle: 'size', type: 'input', controle: 'select', libelle: 'Taille' },
     { cle: 'label', type: 'contenu', controle: 'texte', libelle: 'Libellé', defaut: 'Enregistrer' },
     { cle: 'disabled', type: 'natif', controle: 'interrupteur', libelle: 'Désactivé', defaut: false },
     {
@@ -43,6 +43,11 @@ export const BUTTON: FicheComposant = {
       ],
     },
   ],
+  slots: {
+    '[socButtonLeftIcon]': 'Icône avant le libellé',
+    default: 'Libellé du bouton',
+    '[socButtonRightIcon]': 'Icône après le libellé',
+  },
   variantes: { reglage: 'variant' },
   etats: [
     { id: 'defaut', titre: 'Par défaut', valeurs: {} },

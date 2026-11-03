@@ -24,6 +24,10 @@ describe('Catalogue : fiches cohérentes avec l’API du kit', () => {
         }
       });
 
+      it('donne un rôle en français à chaque slot du kit, et seulement à eux', () => {
+        expect(Object.keys(fiche.slots).sort()).toEqual((api?.slots.map((s) => s.selector) ?? []).sort());
+      });
+
       it('ne cite dans les variantes et les états que ses propres réglages', () => {
         const cles = fiche.reglages.map((r) => r.cle);
         expect(cles).toContain(fiche.variantes.reglage);
