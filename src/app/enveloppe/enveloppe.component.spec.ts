@@ -11,7 +11,7 @@ describe('Enveloppe', () => {
   it('affiche la barre latérale groupée par catégorie et la version du kit', async () => {
     const harness = await RouterTestingHarness.create('/demarrer');
     const page = harness.fixture.nativeElement as HTMLElement;
-    const liens = [...page.querySelectorAll('app-barre-laterale a')].map((a) => a.textContent?.trim());
+    const liens = [...page.querySelectorAll('app-barre-laterale a')].map((a) => a.textContent?.replace(/\s+/g, ' ').trim());
     expect(liens).toEqual([
       'Socium Design Hub',
       'Démarrer',
@@ -20,8 +20,12 @@ describe('Enveloppe', () => {
       'Select',
       'Tabs',
       'Tag',
-      'Tous les prototypes',
+      'Prototypes',
+      'Workspace 8',
+      'Performance 5',
     ]);
+    const bientot = [...page.querySelectorAll('app-barre-laterale .inactif')].map((s) => s.textContent?.replace(/\s+/g, ' ').trim());
+    expect(bientot).toEqual(['Payroll Bientôt', 'Workflow Bientôt', 'Doc Bientôt', 'Job Bientôt', 'Time Bientôt']);
     const categories = [...page.querySelectorAll('app-barre-laterale .categorie')].map((c) => c.textContent);
     expect(categories).toEqual(['Actions', 'Saisie', 'Sélection', 'Navigation', 'Feedback']);
     expect(page.querySelector('app-en-tete')?.textContent).toMatch(/v\d+\.\d+\.\d+/);

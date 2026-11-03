@@ -1,0 +1,65 @@
+// Styles communs des pages Prototypes (enveloppe uniquement).
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bridges-position-gap-xl);
+}
+
+.fil {
+  margin: 0;
+  font-size: var(--bridges-size-text-text-size-sm);
+  color: var(--bridges-color-text-secondary);
+
+  a {
+    color: inherit;
+  }
+}
+
+h1 {
+  margin: 0;
+  font-family: var(--bridges-shape-text-heading-1-font);
+  font-weight: var(--bridges-shape-text-heading-1-weight);
+  font-size: var(--bridges-size-text-heading-size-page);
+  line-height: var(--bridges-size-text-line-height-4xl);
+}
+
+.intro {
+  margin: 0;
+  color: var(--bridges-color-text-secondary);
+}
+
+.glyphe {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: var(--bridges-size-icon-xl);
+  height: var(--bridges-size-icon-xl);
+}
+
+.externe {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--bridges-position-gap-2xs);
+  font-size: var(--bridges-size-text-text-size-sm);
+  color: var(--bridges-color-text-action);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  svg {
+    width: var(--bridges-size-text-text-size-sm);
+    height: var(--bridges-size-text-text-size-sm);
+  }
+}
+
+.lecteur {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

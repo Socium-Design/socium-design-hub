@@ -1,0 +1,71 @@
+.titre {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--bridges-position-gap-md);
+}
+
+.compte {
+  font-size: var(--bridges-size-text-text-size-sm);
+  color: var(--bridges-color-text-secondary);
+}
+
+.carte {
+  background: var(--bridges-color-surface-neutral-white);
+  border: var(--bridges-shape-figure-border-stroke-default) solid var(--bridges-color-border-subtle);
+  border-radius: var(--bridges-shape-figure-radius-xl);
+}
+
+// Le tableau défile horizontalement dans son cadre plutôt que d'être coupé.
+.defile {
+  overflow-x: auto;
+
+  &:focus-visible {
+    outline: var(--bridges-shape-figure-border-stroke-emphasis) solid var(--bridges-color-border-focus);
+  }
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--bridges-size-text-text-size-sm);
+}
+
+th,
+td {
+  padding: var(--bridges-position-padding-md) var(--bridges-position-padding-lg);
+  text-align: left;
+  white-space: nowrap;
+  border-bottom: var(--bridges-shape-figure-border-stroke-default) solid var(--bridges-color-border-subtle);
+}
+
+th {
+  font-family: var(--bridges-shape-text-label-font);
+  font-weight: var(--bridges-shape-text-label-weight);
+  color: var(--bridges-color-text-secondary);
+  background: var(--bridges-color-background-layer-1);
+}
+
+tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.ecran {
+  font-weight: var(--bridges-shape-text-label-weight);
+  color: var(--bridges-color-text-action);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+code {
+  font-family: var(--bridges-shape-text-code-font);
+  font-size: var(--bridges-size-text-text-size-xs);
+  color: var(--bridges-color-text-secondary);
+}
+
+.vide {
+  color: var(--bridges-color-text-tertiary);
+}

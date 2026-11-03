@@ -1,0 +1,112 @@
+.cartes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(calc(var(--index-navigation-sidenavigation-nav-width-open) * 1.1), 1fr));
+  gap: var(--bridges-position-gap-xl);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+li {
+  display: flex;
+}
+
+.carte {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--bridges-color-surface-neutral-white);
+  border: var(--bridges-shape-figure-border-stroke-default) solid var(--bridges-color-border-subtle);
+  border-radius: var(--bridges-shape-figure-radius-xl);
+  color: var(--bridges-color-text-primary);
+  text-decoration: none;
+  transition: border-color 0.15s ease;
+
+  &:is(a):hover {
+    border-color: var(--bridges-color-border-tertiary);
+  }
+
+  &:is(a):focus-visible {
+    outline: var(--bridges-shape-figure-border-stroke-emphasis) solid var(--bridges-color-border-focus);
+    outline-offset: var(--bridges-shape-figure-border-stroke-emphasis);
+  }
+}
+
+// Les illustrations sont dessinées en 360 × 192.
+.illustration {
+  display: block;
+  width: 100%;
+  aspect-ratio: 360 / 192;
+  object-fit: cover;
+
+  // Produit sans illustration : dégradé bleu clair et cercle, comme les illustrations fournies, glyphe en grand.
+  &.degrade {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--bridges-color-accent-blue-bg), var(--bridges-color-surface-neutral-white));
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 36%;
+      left: 64%;
+      width: 42%;
+      aspect-ratio: 1;
+      border-radius: var(--bridges-shape-figure-radius-full);
+      background: linear-gradient(180deg, var(--bridges-color-accent-blue-bg), var(--bridges-color-surface-neutral-first));
+    }
+  }
+}
+
+.grand-glyphe {
+  position: relative;
+  display: inline-flex;
+  // Le glyphe du kit a une taille fixe : on l'agrandit sans toucher à ses styles.
+  transform: scale(3.5);
+}
+
+.corps {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--bridges-position-gap-sm);
+  padding: var(--bridges-position-padding-lg) var(--bridges-position-padding-xl) var(--bridges-position-padding-xl);
+}
+
+.nom {
+  display: flex;
+  align-items: center;
+  gap: var(--bridges-position-gap-sm);
+}
+
+h2 {
+  margin: 0;
+  font-family: var(--bridges-shape-text-heading-2-font);
+  font-weight: var(--bridges-shape-text-heading-2-weight);
+  font-size: var(--bridges-size-text-text-size-lg);
+}
+
+.description {
+  flex: 1;
+  margin: 0;
+  font-size: var(--bridges-size-text-text-size-sm);
+  color: var(--bridges-color-text-secondary);
+}
+
+.compte {
+  font-family: var(--bridges-shape-text-label-font);
+  font-weight: var(--bridges-shape-text-label-weight);
+  font-size: var(--bridges-size-text-text-size-sm);
+  color: var(--bridges-color-text-action);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carte {
+    transition: none;
+  }
+}

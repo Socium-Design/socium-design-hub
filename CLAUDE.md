@@ -20,6 +20,8 @@ et les prototypes du SIRH. Il remplace Storybook. Déployé sur Vercel en attend
 ## Règles
 - Ne merge, ne tague et ne publie rien sans mon accord.
 - Avant chaque action irréversible, vérifie la condition et arrête-toi si elle n'est pas remplie.
+- Ne commite et ne pousse (sur n'importe quelle branche) qu'après un build et des tests
+  réussis, avec une commande qui s'arrête au premier échec.
 - Ne jamais écrire de jeton dans un fichier du repo ou dans un message.
 - Si un fichier attendu manque, demande-moi au lieu de chercher ailleurs sur ma machine.
 - Ne rien modifier dans sirh_prototype ni dans design_system_angular depuis ce projet.
