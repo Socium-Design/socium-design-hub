@@ -98,6 +98,10 @@ button {
     transform: rotate(-90deg);
   }
 
+  &.petit {
+    padding: var(--bridges-position-padding-tiny);
+  }
+
   &:hover {
     background: var(--index-navigation-sidenavigation-item-bg-hover);
     color: var(--index-navigation-sidenavigation-item-icon-hover);
@@ -128,7 +132,16 @@ button {
   }
 }
 
+.n2-ligne {
+  padding-right: 0;
+}
+
 .n2-lien {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: var(--index-navigation-sidenavigation-item-gap);
+  color: inherit;
   text-decoration: none;
 
   &:hover {
@@ -141,6 +154,11 @@ button {
 }
 
 .n2.inactif {
+  // Réserve la place du chevron des produits dépliables : tous les badges s'alignent à droite.
+  padding-right: calc(
+    var(--index-navigation-sidenavigation-menu-title-chevron-size) + 2 * var(--bridges-position-padding-tiny) +
+      var(--index-navigation-sidenavigation-item-gap)
+  );
   color: var(--index-navigation-sidenavigation-item-text-default);
 }
 
