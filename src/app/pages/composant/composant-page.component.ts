@@ -39,7 +39,9 @@ const STATUTS: Record<Statut, { libelle: string; couleur: TagColor }> = {
         <p class="description">{{ fiche.description }}</p>
         <nav class="sommaire" aria-label="Sections de la page">
           <a routerLink="." fragment="playground">Playground</a>
-          <a routerLink="." fragment="variantes">Variantes</a>
+          @if (fiche.variantes) {
+            <a routerLink="." fragment="variantes">Variantes</a>
+          }
           <a routerLink="." fragment="etats">États</a>
           <a routerLink="." fragment="api">API</a>
         </nav>
@@ -50,20 +52,30 @@ const STATUTS: Record<Statut, { libelle: string; couleur: TagColor }> = {
         <app-playground [fiche]="fiche" />
       </section>
 
-      <section aria-labelledby="variantes">
-        <h2 id="variantes">Variantes</h2>
-        <app-apercu-frame
-          class="carte"
-          [composant]="fiche.id"
-          [exemples]="variantes()"
-          [titre]="'Variantes de ' + fiche.titre"
-          legendes
-        />
-      </section>
+      @if (fiche.variantes) {
+        <section aria-labelledby="variantes">
+          <h2 id="variantes">Variantes</h2>
+          <app-apercu-frame
+            class="carte"
+            [composant]="fiche.id"
+            [exemples]="variantes()"
+            [titre]="'Variantes de ' + fiche.titre"
+            [largeur]="fiche.apercu ?? 'contenu'"
+            legendes
+          />
+        </section>
+      }
 
       <section aria-labelledby="etats">
         <h2 id="etats">États</h2>
-        <app-apercu-frame class="carte" [composant]="fiche.id" [exemples]="etats()" [titre]="'États de ' + fiche.titre" legendes />
+        <app-apercu-frame
+          class="carte"
+          [composant]="fiche.id"
+          [exemples]="etats()"
+          [titre]="'États de ' + fiche.titre"
+          [largeur]="fiche.apercu ?? 'contenu'"
+          legendes
+        />
         <p class="aide">Passez la souris ou utilisez Tab sur l'aperçu pour voir le survol et le focus.</p>
       </section>
 

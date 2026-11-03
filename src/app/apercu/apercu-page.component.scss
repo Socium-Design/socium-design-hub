@@ -11,6 +11,16 @@
   align-items: flex-end;
   gap: var(--bridges-position-gap-xl);
 
+  // Champs de formulaire : largeur d'un champ, pas celle de leur contenu.
+  &.champ {
+    align-items: flex-start;
+  }
+
+  &.champ figure {
+    align-items: stretch;
+    width: calc(var(--index-navigation-sidenavigation-nav-width-open) * 1.25);
+  }
+
   &.seul {
     justify-content: center;
     padding: var(--bridges-position-padding-2xl) 0;

@@ -6,6 +6,8 @@ iframe {
   display: block;
   width: 100%;
   border: 0;
+  // Fond de la zone réservée sous les exemples quand une liste déroulante est ouverte.
+  background: var(--bridges-color-surface-neutral-white);
 }
 
 // Squelette affiché tant que l'iframe n'a pas rendu ses exemples. Le kit n'a pas de Skeleton (0.3.6) :

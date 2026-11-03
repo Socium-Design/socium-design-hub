@@ -69,6 +69,21 @@ describe('ComposantPageComponent', () => {
     expect(code()).toContain('Valider');
   });
 
+  for (const [id, titre, variantes] of [
+    ['champ-texte', 'Champ texte', false],
+    ['select', 'Select', true],
+    ['tabs', 'Tabs', true],
+    ['tag', 'Tag', true],
+  ] as const) {
+    it(`génère la page ${titre}${variantes ? '' : ' sans section Variantes (pas de variante dans le kit)'}`, async () => {
+      const page = await ouvrir(`/composants/${id}`);
+      expect(page.querySelector('h1')?.textContent).toBe(titre);
+      const sections = [...page.querySelectorAll('h2')].map((h) => h.id);
+      expect(sections).toEqual(variantes ? ['playground', 'variantes', 'etats', 'api'] : ['playground', 'etats', 'api']);
+      expect(page.querySelectorAll('iframe').length).toBe(variantes ? 3 : 2);
+    });
+  }
+
   it('signale une fiche inconnue', async () => {
     const page = await ouvrir('/composants/inconnu');
     expect(page.querySelector('h1')?.textContent).toBe('Composant introuvable');

@@ -13,7 +13,7 @@ import { CANAL, MessageApercu, estMessageApercu } from './messages';
   imports: [NgComponentOutlet],
   template: `
     @if (gabarit(); as gabarit) {
-      <div class="exemples" [class.seul]="exemples().length === 1">
+      <div class="exemples" [class.seul]="exemples().length === 1" [class.champ]="largeur() === 'champ'">
         @for (exemple of exemples(); track exemple.id) {
           <figure>
             <div class="rendu">
@@ -35,8 +35,10 @@ export class ApercuPageComponent {
   readonly gabarit = signal<Type<unknown> | null>(null);
   readonly exemples = signal<Exemple[]>([]);
   readonly legendes = signal(false);
+  readonly largeur = signal<'contenu' | 'champ'>('contenu');
 
   private readonly hote = inject<ElementRef<HTMLElement>>(ElementRef);
+  private derniereHauteur = 0;
 
   constructor() {
     const ecouter = (event: MessageEvent) => {
@@ -44,21 +46,46 @@ export class ApercuPageComponent {
       if (event.data.type === 'rendu') {
         this.exemples.set(event.data.exemples);
         this.legendes.set(event.data.legendes);
+        this.largeur.set(event.data.largeur);
       }
     };
     window.addEventListener('message', ecouter);
 
     // La hauteur n'est envoyée qu'une fois des exemples rendus : la page parente affiche son squelette jusque-là.
-    const observateur = new ResizeObserver(() => {
-      if (this.gabarit() && this.exemples().length) {
-        this.envoyer({ canal: CANAL, type: 'hauteur', hauteur: this.hote.nativeElement.offsetHeight });
+    // Elle couvre aussi les calques ouverts dans <body> (liste d'un select, popover) pour qu'ils ne soient pas coupés.
+    const mesurer = () => {
+      if (!this.gabarit() || !this.exemples().length) return;
+      const racine = this.hote.nativeElement.closest('app-root');
+      const calques = [...document.body.children].filter(
+        (e): e is HTMLElement =>
+          e instanceof HTMLElement &&
+          e !== racine &&
+          e.tagName !== 'SCRIPT' &&
+          // Le panneau du popover reste dans <body>, masqué, quand il est fermé.
+          getComputedStyle(e).visibility !== 'hidden' &&
+          getComputedStyle(e).display !== 'none',
+      );
+      // Le popover du kit s'ouvre vers le haut quand la place manque en dessous, et se replace quand la fenêtre change de
+      // taille : on réserve sous le contenu la hauteur du calque, l'iframe s'agrandit et la liste s'ouvre en dessous.
+      const contenu = this.hote.nativeElement.offsetHeight;
+      const bas = Math.max(
+        contenu,
+        ...calques.map((c) => Math.ceil(Math.max(c.getBoundingClientRect().bottom + window.scrollY, contenu + c.offsetHeight))),
+      );
+      if (bas !== this.derniereHauteur) {
+        this.derniereHauteur = bas;
+        this.envoyer({ canal: CANAL, type: 'hauteur', hauteur: bas });
       }
-    });
+    };
+    const observateur = new ResizeObserver(mesurer);
     observateur.observe(this.hote.nativeElement);
+    const mutations = new MutationObserver(() => requestAnimationFrame(mesurer));
+    mutations.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['style', 'class'] });
 
     inject(DestroyRef).onDestroy(() => {
       window.removeEventListener('message', ecouter);
       observateur.disconnect();
+      mutations.disconnect();
     });
   }
 
