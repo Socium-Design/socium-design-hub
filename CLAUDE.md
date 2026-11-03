@@ -8,6 +8,8 @@ et les prototypes du SIRH. Il remplace Storybook. Déployé sur Vercel en attend
 - Deux couches : l'enveloppe du hub (navigation, recherche, panneaux) et les aperçus de composants.
 - L'enveloppe peut avoir sa propre mise en page, moderne, mais utilise uniquement
   les tokens du kit (--bridges-*) : aucune couleur, police ou espacement en dur.
+- Exception : le thème de code (coloration syntaxique) a ses propres couleurs,
+  définies uniquement dans src/app/code/theme-code.ts, avec un contraste ≥ 4,5:1.
 - Les composants affichés viennent du kit publié, sans aucune surcharge de style.
   Les aperçus sont isolés pour que le style de l'enveloppe ne les touche jamais.
 - Les contrôles du playground utilisent les composants du kit quand c'est possible.
