@@ -40,6 +40,22 @@ nav {
   color: var(--bridges-color-text-tertiary);
 }
 
+.rubrique a {
+  color: inherit;
+  text-decoration: none;
+
+  &:hover,
+  &.actif-rubrique {
+    color: var(--bridges-color-text-action);
+  }
+}
+
+.compte {
+  margin-left: auto;
+  font-size: var(--bridges-size-text-text-size-xs);
+  color: var(--bridges-color-text-tertiary);
+}
+
 .lien {
   padding: var(--bridges-position-padding-3xs) var(--bridges-position-padding-md);
   border-radius: var(--bridges-shape-figure-radius-md);
@@ -47,8 +63,25 @@ nav {
   color: var(--bridges-color-text-primary);
   text-decoration: none;
 
+  display: flex;
+  align-items: baseline;
+  gap: var(--bridges-position-gap-sm);
+
   &.sous {
     padding-left: var(--bridges-position-padding-xl);
+  }
+
+  &.ecran {
+    padding-left: var(--bridges-position-padding-3xl);
+    font-size: var(--bridges-size-text-text-size-xs);
+  }
+
+  &.inactif {
+    color: var(--bridges-color-text-tertiary);
+
+    &:hover {
+      background: none;
+    }
   }
 
   &:hover {

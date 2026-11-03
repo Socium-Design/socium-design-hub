@@ -25,7 +25,15 @@ export const routes: Routes = [
         path: 'prototypes',
         title: 'Prototypes — Socium Design Hub',
         loadComponent: () =>
-          import('./sections/prototypes/prototypes-page.component').then((m) => m.PrototypesPageComponent),
+          import('./prototypes/pages/prototypes-accueil.component').then((m) => m.PrototypesAccueilComponent),
+      },
+      {
+        path: 'prototypes/:produit',
+        loadComponent: () => import('./prototypes/pages/produit-page.component').then((m) => m.ProduitPageComponent),
+      },
+      {
+        path: 'prototypes/:produit/:ecran',
+        loadComponent: () => import('./prototypes/pages/ecran-page.component').then((m) => m.EcranPageComponent),
       },
       { path: '**', redirectTo: 'demarrer' },
     ],

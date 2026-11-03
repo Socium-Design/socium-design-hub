@@ -1,0 +1,70 @@
+:host {
+  gap: var(--bridges-position-gap-md);
+}
+
+.tete {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--bridges-position-gap-md);
+}
+
+.titre {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--bridges-position-gap-md);
+}
+
+.route {
+  font-family: var(--bridges-shape-text-code-font);
+  font-size: var(--bridges-size-text-text-size-xs);
+  color: var(--bridges-color-text-secondary);
+}
+
+.cadre {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--bridges-color-surface-neutral-white);
+  border: var(--bridges-shape-figure-border-stroke-default) solid var(--bridges-color-border-subtle);
+  border-radius: var(--bridges-shape-figure-radius-xl);
+}
+
+iframe {
+  display: block;
+  width: 100%;
+  // Assez haut pour utiliser le prototype sans faire défiler la page du hub.
+  height: 80vh;
+  border: 0;
+}
+
+// Calque plein écran de l'enveloppe : la même iframe, sans rechargement, sur toute la fenêtre.
+.cadre.plein-ecran {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  border: 0;
+  border-radius: 0;
+
+  iframe {
+    flex: 1;
+    height: auto;
+  }
+}
+
+.barre {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--bridges-position-gap-md);
+  padding: var(--bridges-position-padding-3xs) var(--bridges-position-padding-lg);
+  border-bottom: var(--bridges-shape-figure-border-stroke-default) solid var(--bridges-color-border-subtle);
+}
+
+.barre-titre {
+  font-family: var(--bridges-shape-text-heading-2-font);
+  font-weight: var(--bridges-shape-text-heading-2-weight);
+  font-size: var(--bridges-size-text-text-size-md);
+}
